@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER Fer Uria <fauria@gmail.com>
 LABEL Description="Cutting-edge LAMP stack, based on Ubuntu 16.04 LTS. Includes .htaccess support and popular PHP7 features, including composer and mail() function." \
 	License="Apache License 2.0" \
-	Usage="docker run -d -p [HOST WWW PORT NUMBER]:80 -p [HOST DB PORT NUMBER]:3306 -v [HOST WWW DOCUMENT ROOT]:/var/www/html -v [HOST DB DOCUMENT ROOT]:/var/lib/mysql fauria/lamp" \
+	Usage="docker run -d -p [HOST WWW PORT NUMBER]:80 -p [HOST DB PORT NUMBER]:3306 -v [HOST WWW DOCUMENT ROOT]:/var/www/web -v [HOST DB DOCUMENT ROOT]:/var/lib/mysql fauria/lamp" \
 	Version="1.0"
 
 RUN apt-get update
@@ -59,15 +59,15 @@ ENV ALLOW_OVERRIDE All
 ENV DATE_TIMEZONE UTC
 ENV TERM dumb
 
-COPY index.php /var/www/html/
+COPY index.php /var/www/web/
 COPY run-lamp.sh /usr/sbin/
 
 RUN a2enmod rewrite
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN chmod +x /usr/sbin/run-lamp.sh
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/web
 
-VOLUME /var/www/html
+VOLUME /var/www/web
 VOLUME /var/log/httpd
 VOLUME /var/lib/mysql
 VOLUME /var/log/mysql
